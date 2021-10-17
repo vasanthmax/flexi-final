@@ -1,0 +1,60 @@
+.PricingCard {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 1px 1px 10px rgb(204, 204, 204);
+  padding: 20px 40px;
+  // min-height: 30rem;
+  max-width: 25rem;
+  min-width: 25rem;
+  border-radius: 10px;
+  .plan-pricing {
+    font-size: 20px;
+    color: #000;
+  }
+  .price {
+    font-size: 36px;
+    color: #1a73e8;
+
+    span {
+      font-size: 14px;
+      color: #616161;
+    }
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid #dadce0;
+    color: #1a73e8;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  ul {
+    list-style: none;
+    li {
+      font-size: 14px;
+      font-weight: 400;
+      color: #616161;
+      margin-bottom: 20px;
+      display: flex;
+      img {
+        height: 20px;
+        width: 20px;
+      }
+      .ticker {
+        height: 20px;
+        width: 20px;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .PricingCard {
+    min-width: 20rem;
+    max-width: 20rem;
+  }
+}

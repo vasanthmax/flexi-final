@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // font-family: "Poppins", sans-serif;
+}
+
+@import './userarea';
+@import './card';
+@import './flipcard';
+@import './pricingCard';
+@import './dashboard';
+@import './normalcardpage';
+@import './flipcardpage';
+@import './pricingcardpage';

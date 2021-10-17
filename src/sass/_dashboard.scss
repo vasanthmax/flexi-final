@@ -1,0 +1,51 @@
+.dashboard {
+  padding: 30px;
+
+  h1 {
+    font-weight: bold;
+  }
+  .button-flex {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    a {
+      .addnew {
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #000000;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 128, 0, 0.72);
+        background: transparent;
+        cursor: pointer;
+      }
+      :hover {
+        background: rgba(0, 128, 0, 0.72);
+        color: #fff;
+      }
+    }
+  }
+}
+.modal-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px;
+  button{
+    padding: 10px 20px;
+    margin-right: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;  
+    border-radius: 5px;  
+  }
+  :nth-child(1):hover{
+    background: #FF5733;
+    color: white;
+  }
+  :nth-child(2):hover{
+    background: #66BB6A;
+    color: white;
+  }
+
+}

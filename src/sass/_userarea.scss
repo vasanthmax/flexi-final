@@ -1,0 +1,253 @@
+.userarea {
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+
+  .navigation {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    .nav-left {
+      .nav-title {
+        font-weight: bold;
+        font-size: 30px;
+        color: #1ba9e9;
+        align-self: center;
+        margin-bottom: 0px;
+      }
+    }
+
+    .button-help {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      background: #000000;
+      padding: 10px 20px;
+      color: #ffffff;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ffffff;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        margin-left: 10px;
+      }
+    }
+  }
+  .fetch-area {
+    margin-bottom: 30px;
+    label {
+      font-weight: bold;
+      font-size: 16px;
+      color: #000000;
+    }
+    .fetch-input {
+      margin-top: 10px;
+      input {
+        width: 15%;
+        padding: 5px;
+        background: #ffffff;
+        border: 2px solid #000000;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+      }
+      button {
+        padding: 10px 20px;
+        background: #1ba9e9;
+        border: none;
+        border-radius: 10px;
+        margin-left: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #ffffff;
+        cursor: pointer;
+      }
+    }
+  }
+  .card-type {
+    label {
+      font-weight: bold;
+      font-size: 16px;
+      color: #000000;
+    }
+    .card-select {
+      margin-top: 20px;
+      width: 15%;
+      .myArrowClassName {
+        padding: 40px;
+        background-color: #000000;
+      }
+      .Dropdown-arrow-wrapper {
+        padding: 5px 10px;
+        background-color: #000000;
+      }
+      .arrow-open {
+        background-color: #000000;
+
+        content: url('../assets/arrow.png');
+        height: 12px;
+        transform: rotate(180deg);
+      }
+      .arrow-closed {
+        background-color: #000000;
+        content: url('../assets/arrow.png');
+        height: 12px;
+      }
+      .Dropdown-control {
+        padding: 0;
+        padding-left: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 2px solid #000000;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+      }
+      .Dropdown-menu {
+        border: 2px solid #000000;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+  .work-area {
+    margin-top: 30px;
+    .workarea-title {
+      font-weight: bold;
+      font-size: 16px;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+    .headings {
+      display: flex;
+      margin-bottom: 30px;
+      align-items: flex-start;
+
+      .element-section {
+        overflow-y: auto;
+        height: 80vh;
+        width: 60%;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(155, 155, 155, 0.7) transparent;
+
+        .selector-section {
+          .editable-section {
+            width: 70%;
+          }
+          .selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            input {
+              width: 40%;
+              padding: 5px;
+              background: #ffffff;
+              border: 2px solid #000000;
+              box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+              margin-right: 20px;
+            }
+            .dropdown-section {
+              width: 40%;
+              .myArrowClassName {
+                padding: 40px;
+                background-color: #000000;
+              }
+              .Dropdown-arrow-wrapper {
+                padding: 5px 10px;
+                background-color: #000000;
+              }
+              .arrow-open {
+                background-color: #000000;
+
+                content: url('../assets/arrow.png');
+                height: 12px;
+                transform: rotate(180deg);
+              }
+              .arrow-closed {
+                background-color: #000000;
+                content: url('../assets/arrow.png');
+                height: 12px;
+              }
+              .Dropdown-control {
+                padding: 0;
+                padding-left: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: 2px solid #000000;
+                box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+              }
+              .Dropdown-menu {
+                border: 2px solid #000000;
+                box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+              }
+            }
+          }
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: rgba(155, 155, 155, 0.7);
+        border-radius: 20px;
+        border: transparent;
+      }
+      .design-area {
+        margin-top: 0px;
+        width: 40%;
+        height: 80vh;
+        margin-left: 20px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .save-button {
+      padding: 10px 20px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      margin-right: 20px;
+      background: rgba(0, 128, 0, 0.72);
+      color: #fff;
+    }
+
+    .review-all-button {
+      padding: 10px 20px;
+      font-size: 14px;
+      color: #000000;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid rgba(0, 128, 0, 0.72);
+      background: transparent;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+    .review-all-button:hover {
+      background: rgba(0, 128, 0, 0.72);
+      color: #fff;
+    }
+    .update-button {
+      padding: 10px 20px;
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: none;
+      background: #1ba9e9;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+  }
+}

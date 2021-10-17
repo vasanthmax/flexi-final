@@ -40,6 +40,7 @@
     "stripe": "8.132.0",
     "table-top": "^0.0.3",
     "tabletop": "^1.6.3",
+    "toastify-js": "^1.11.2",
     "use-local-storage-state": "9.0.2"
   },
   "scripts": {

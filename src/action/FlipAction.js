@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
-
+import Toastify from 'toastify-js';
+import 'toastify-js/src/toastify.css';
 export const FlexiApi = (cardDetails) => {
   return async function (dispatch) {
     const card = await axios.post(
@@ -8,7 +9,11 @@ export const FlexiApi = (cardDetails) => {
       cardDetails
     );
     if (card.status === 201) {
-      message.success('Your Card has been saved Successfully');
+      Toastify({
+        text: 'Your Card has been saved Successfully',
+        backgroundColor: '#B28800',
+        position: 'center'
+      }).showToast();
     }
     dispatch({
       type: 'FLIPABLE_CARDS',

@@ -15,7 +15,7 @@ export const UpdateCards = (id, cardType, cardDetails) => {
         position: 'center'
       }).showToast();
       setTimeout(() => {
-        window.location.replace('http://localhost:3000/dashboard');
+        window.location.replace('/dashboard');
       }, 1000);
     }
     dispatch({

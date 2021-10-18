@@ -24,6 +24,7 @@ import { ExpandMore } from "@material-ui/icons";
 const { Panel } = Collapse;
 
 const UserArea = () => {
+  const [userid,setuserid] = useState('')
   const [cardType, setCardType] = useState("");
   const selector = useSelector((state) => state.flipReducer.flip);
   const selectorPricing = useSelector((state) => state.pricingReducer.pricing);
@@ -238,6 +239,7 @@ const UserArea = () => {
   const saveToDatabase = async () => {
     if (cardType === "Flip") {
       const FlexiApiDetails = {
+        userid:userid,
         sheetid: id,
         cardtype: cardType,
         namekey: FlipNameKey,
@@ -271,6 +273,7 @@ const UserArea = () => {
     if (cardType === "Pricing") {
       console.log("princing");
       const FlexiApiDetails = {
+        userid:userid,
         sheetid: id,
         cardtype: cardType,
         plannamekey: PricingPlanNameKey,
@@ -306,6 +309,7 @@ const UserArea = () => {
 
     if (cardType === "Normal") {
       const FlexiApiDetails = {
+        userid:userid,
         sheetid: id,
         cardtype: cardType,
         namekey: Namekey,
@@ -346,10 +350,13 @@ const UserArea = () => {
   const history = useHistory();
   useEffect(() => {
     const user = localStorage.getItem("profile");
+    setuserid(user)
     if (!user) {
       history.push("/auth/signin");
     }
   }, []);
+  console.log(userid)
+
   return (
     <div className="userarea">
       <div className="navigation">

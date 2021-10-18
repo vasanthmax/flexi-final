@@ -20,7 +20,7 @@ import {
   Slider,
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
-
+import { useDarkMode } from '../util/theme'
 const { Panel } = Collapse;
 
 const UserArea = () => {
@@ -356,7 +356,7 @@ const UserArea = () => {
     }
   }, []);
   console.log(userid)
-
+  const dark = useDarkMode();
   return (
     <div className="userarea">
       <div className="navigation">
@@ -368,7 +368,7 @@ const UserArea = () => {
         </button>
       </div>
       <div className="fetch-area">
-        <label htmlFor="sheetid">Sheet Id</label>
+        <label htmlFor="sheetid" style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Sheet Id</label>
         <div className="fetch-input">
           <input
             type="text"
@@ -380,7 +380,7 @@ const UserArea = () => {
         </div>
       </div>
       <div className="card-type">
-        <label htmlFor="cardtype">Card Type</label>
+        <label htmlFor="cardtype" style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Card Type</label>
         <div className="card-select">
           <Dropdown
             arrowClassName="myArrowClassName"
@@ -396,7 +396,7 @@ const UserArea = () => {
         </div>
       </div>
       <div className="work-area">
-        <p className="workarea-title">Headings</p>
+        <p className="workarea-title" style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Headings</p>
         <div className="headings">
           <div className="element-section">
             <div className="selector-section">

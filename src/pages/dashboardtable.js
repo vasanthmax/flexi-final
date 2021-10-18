@@ -4,7 +4,8 @@ import { FlipCardAll } from '../action/FlipCardAll';
 import { FlexiApiDelete } from '../action/FlipDelete';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
-import{ Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Modal,Box,Typography }from '@material-ui/core'
+import{ Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Modal,Box,Typography }from '@material-ui/core';
+import { useDarkMode } from '../util/theme'
 const Dashboard = () => {
   const style = {
     position: 'absolute',
@@ -19,7 +20,6 @@ const Dashboard = () => {
   };
   
   const dispatch = useDispatch();
-
   const [deletelinkid, setDeleteLinkid] = useState('');
   const [deletecardtype, setDeletecardtype] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -83,12 +83,13 @@ const Dashboard = () => {
       )
     }
   }
+  const dark = useDarkMode();
   return (
     <div className='dashboard' style={{ fontFamily: 'Poppins' }}>
       <h1>Dashboard</h1>
       <div className='button-flex'>
         <a href='/userarea'>
-          <button className='addnew'>Add New</button>
+          <button className='addnew' style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Add New</button>
         </a>
       </div>
       {/* <Table columns={columns} dataSource={data} pagination={false} /> */}
@@ -123,7 +124,7 @@ const Dashboard = () => {
               }}
               onClick={() => showModal(row.name, row.calories)}
             >
-              <DeleteFilled style={{ fontSize: '20px', marginRight: '10px' }} />
+              <DeleteFilled style={{ fontSize: '20px', marginRight: '10px' ,color:`${dark.value === true ? 'white' : 'black' }`}} />
             </button>
             <Link
               to={`update/${row.calories}?id=${row.name}&sheet=${row.carbs}`}
@@ -139,7 +140,7 @@ const Dashboard = () => {
                 <EditFilled
                   style={{
                     fontSize: '20px',
-                    color: '#000',
+                    color:`${dark.value === true ? 'white' : 'black' }`,
                     marginLeft: '10px',
                   }}
                 />

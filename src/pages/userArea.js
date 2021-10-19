@@ -358,6 +358,7 @@ const UserArea = () => {
   console.log(userid)
   const dark = useDarkMode();
   return (
+    <>
     <div className="userarea">
       <div className="navigation">
         <div className="nav-left">
@@ -1417,6 +1418,10 @@ const UserArea = () => {
         </a>
       </div>
     </div>
+    <div className="mobile-feature">
+        <p>Mobile View Not Available</p>
+      </div>
+    </>
   );
 };
 

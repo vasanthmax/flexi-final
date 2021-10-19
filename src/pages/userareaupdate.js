@@ -510,6 +510,7 @@ const UserAreaUpdate = () => {
   }, []);
   const dark = useDarkMode();
   return (
+    <>
     <div className='userarea'>
       <div className='navigation'>
         <div className='nav-left'>
@@ -2658,6 +2659,10 @@ const UserAreaUpdate = () => {
         </button>
       </div>
     </div>
+    <div className="mobile-feature">
+        <p>Mobile View Not Available</p>
+      </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 .userarea {
   padding: 40px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 
   .navigation {
     width: 100%;
@@ -90,13 +90,13 @@
       .arrow-open {
         background-color: #000000;
 
-        content: url('../assets/arrow.png');
+        content: url("../assets/arrow.png");
         height: 12px;
         transform: rotate(180deg);
       }
       .arrow-closed {
         background-color: #000000;
-        content: url('../assets/arrow.png');
+        content: url("../assets/arrow.png");
         height: 12px;
       }
       .Dropdown-control {
@@ -163,13 +163,13 @@
               .arrow-open {
                 background-color: #000000;
 
-                content: url('../assets/arrow.png');
+                content: url("../assets/arrow.png");
                 height: 12px;
                 transform: rotate(180deg);
               }
               .arrow-closed {
                 background-color: #000000;
-                content: url('../assets/arrow.png');
+                content: url("../assets/arrow.png");
                 height: 12px;
               }
               .Dropdown-control {
@@ -248,6 +248,60 @@
       background: #1ba9e9;
       cursor: pointer;
       margin-right: 20px;
+    }
+  }
+}
+
+.mobile-feature {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .userarea {
+    display: none;
+  }
+  .mobile-feature {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .userarea {
+    .fetch-area {
+      .fetch-input {
+        input {
+          width: 50%;
+        }
+      }
+    }
+    .card-type {
+      .card-select{
+        width: 40%;
+      }
+    }
+    .work-area{
+      .headings{
+        flex-direction: column-reverse;
+        .element-section {
+          width: 90%;
+          .selector-section {
+            .editable-section {
+              width: 100%;
+            }
+            .selector {
+              input {
+                width: 50%;
+              }
+              .dropdown-section {
+                width: 70%;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

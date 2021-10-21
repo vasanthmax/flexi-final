@@ -12,6 +12,7 @@ import { FlexiPricingApi } from "../action/PricingCard";
 import { FlexiNormalApi } from "../action/NormalCard";
 import { Link, useHistory } from "react-router-dom";
 import Papa from "papaparse";
+import FlipCard2 from "../components/flipCard2";
 import {
   Accordion,
   AccordionSummary,
@@ -1353,8 +1354,28 @@ const UserArea = () => {
                   fontname={fontname}
                 ></Card>
               ) : cardType === "Flip" ? (
-                <FlipCard
-                  Name={FlipName}
+                // <FlipCard
+                //   Name={FlipName}
+                //   Title={Fliptitle}
+                //   Price={FlipPrice}
+                //   Description={FlipDescription}
+                //   Goto={Goto}
+                //   Photo={FlipPhoto}
+                //   flipTitleSize={FlipTitleSize}
+                //   flipTitleColor={FlipTitleColor}
+                //   FlipNameColor={FlipNameColor}
+                //   FlipNameSize={FlipNameSize}
+                //   FlipCardColor={FlipCardColor}
+                //   FlipPriceColor={FlipPriceColor}
+                //   FlipPriceSize={FlipPriceSize}
+                //   FlipDescriptionColor={FlipDescriptionColor}
+                //   FlipDescriptionSize={FlipDescriptionSize}
+                //   FlipButtonColor={FlipButtonColor}
+                //   FlipButtonTextColor={FlipButtonTextColor}
+                //   FlipFont={FlipFont}
+                // ></FlipCard>
+                <FlipCard2
+                Name={FlipName}
                   Title={Fliptitle}
                   Price={FlipPrice}
                   Description={FlipDescription}
@@ -1372,7 +1393,9 @@ const UserArea = () => {
                   FlipButtonColor={FlipButtonColor}
                   FlipButtonTextColor={FlipButtonTextColor}
                   FlipFont={FlipFont}
-                ></FlipCard>
+                >
+
+                </FlipCard2>
               ) : cardType === "Pricing" ? (
                 <PricingCard
                   planName={PricingPlanName}

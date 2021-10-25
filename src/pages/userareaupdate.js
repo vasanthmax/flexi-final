@@ -14,6 +14,9 @@ import { FlexiPricingApiGet } from '../action/PricingCardGet';
 import { Link, useHistory } from 'react-router-dom';
 import { UpdateCards } from '../action/updateAction';
 import Papa from 'papaparse'
+import ModalVideo from 'react-modal-video'
+import 'react-modal-video/scss/modal-video.scss';
+import FlipCard2 from '../components/flipCard2';
 import {
   Accordion,
   AccordionSummary,
@@ -27,6 +30,7 @@ const { Panel } = Collapse;
 
 
 const UserAreaUpdate = () => {
+  const [modalopen,setModalOpen] = useState(false);
   const dispatch = useDispatch();
   const cardid = new URLSearchParams(window.location.search).get('id');
   const sheetid = new URLSearchParams(window.location.search).get('sheet');
@@ -516,9 +520,10 @@ const UserAreaUpdate = () => {
         <div className='nav-left'>
           <p className='nav-title'>User Area</p>
         </div>
-        <button className='button-help'>
+        <button className="button-help" onClick={() => setModalOpen(!modalopen)}>
           Help <span>i</span>
         </button>
+        <ModalVideo channel='youtube' autoplay isOpen={modalopen} videoId="YykjpeuMNEk" onClose={() => setModalOpen(false)} />
       </div>
       <div className='fetch-area'>
         <label htmlFor='sheetid' style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Sheet Id</label>
@@ -2605,8 +2610,8 @@ const UserAreaUpdate = () => {
                   fontname={fontname}
                 ></Card>
               ) : cardType === 'Flip' ? (
-                <FlipCard
-                  Name={FlipName}
+                <FlipCard2
+                Name={FlipName}
                   Title={Fliptitle}
                   Price={FlipPrice}
                   Description={FlipDescription}
@@ -2624,7 +2629,8 @@ const UserAreaUpdate = () => {
                   FlipButtonColor={FlipButtonColor}
                   FlipButtonTextColor={FlipButtonTextColor}
                   FlipFont={FlipFont}
-                ></FlipCard>
+                >
+                </FlipCard2>
               ) : cardType === 'Pricing' ? (
                 <PricingCard
                   planName={PricingPlanName}

@@ -2,7 +2,9 @@ import React from "react";
 import ContactSection from "./../components/ContactSection";
 
 function ContactPage(props) {
+
   return (
+    <>
     <ContactSection
       bgColor="default"
       size="medium"
@@ -14,6 +16,7 @@ function ContactPage(props) {
       buttonColor="primary"
       showNameField={true}
     />
+    </>
   );
 }
 

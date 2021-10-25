@@ -13,6 +13,10 @@ import { FlexiNormalApi } from "../action/NormalCard";
 import { Link, useHistory } from "react-router-dom";
 import Papa from "papaparse";
 import FlipCard2 from "../components/flipCard2";
+import NormalCard from "../components/NormalCard";
+import ModalVideo from "react-modal-video";
+import "react-modal-video/scss/modal-video.scss";
+
 import {
   Accordion,
   AccordionSummary,
@@ -21,11 +25,12 @@ import {
   Slider,
 } from "@material-ui/core";
 import { ExpandMore } from "@material-ui/icons";
-import { useDarkMode } from '../util/theme'
+import { useDarkMode } from "../util/theme";
 const { Panel } = Collapse;
 
 const UserArea = () => {
-  const [userid,setuserid] = useState('')
+  const [modalopen, setModalOpen] = useState(false);
+  const [userid, setuserid] = useState("");
   const [cardType, setCardType] = useState("");
   const selector = useSelector((state) => state.flipReducer.flip);
   const selectorPricing = useSelector((state) => state.pricingReducer.pricing);
@@ -240,7 +245,7 @@ const UserArea = () => {
   const saveToDatabase = async () => {
     if (cardType === "Flip") {
       const FlexiApiDetails = {
-        userid:userid,
+        userid: userid,
         sheetid: id,
         cardtype: cardType,
         namekey: FlipNameKey,
@@ -274,7 +279,7 @@ const UserArea = () => {
     if (cardType === "Pricing") {
       console.log("princing");
       const FlexiApiDetails = {
-        userid:userid,
+        userid: userid,
         sheetid: id,
         cardtype: cardType,
         plannamekey: PricingPlanNameKey,
@@ -310,7 +315,7 @@ const UserArea = () => {
 
     if (cardType === "Normal") {
       const FlexiApiDetails = {
-        userid:userid,
+        userid: userid,
         sheetid: id,
         cardtype: cardType,
         namekey: Namekey,
@@ -351,1097 +356,1151 @@ const UserArea = () => {
   const history = useHistory();
   useEffect(() => {
     const user = localStorage.getItem("profile");
-    setuserid(user)
+    setuserid(user);
     if (!user) {
       history.push("/auth/signin");
     }
   }, []);
-  console.log(userid)
+  console.log(userid);
   const dark = useDarkMode();
   return (
     <>
-    <div className="userarea">
-      <div className="navigation">
-        <div className="nav-left">
-          <p className="nav-title">User Area</p>
-        </div>
-        <button className="button-help">
-          Help <span>i</span>
-        </button>
-      </div>
-      <div className="fetch-area">
-        <label htmlFor="sheetid" style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Sheet Id</label>
-        <div className="fetch-input">
-          <input
-            type="text"
-            name="sheetid"
-            onChange={(e) => setId(e.target.value)}
-            value={id}
-          />
-          <button onClick={fetchData}>Fetch</button>
-        </div>
-      </div>
-      <div className="card-type">
-        <label htmlFor="cardtype" style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Card Type</label>
-        <div className="card-select">
-          <Dropdown
-            arrowClassName="myArrowClassName"
-            arrowClosed={<span className="arrow-closed" />}
-            arrowOpen={<span className="arrow-open" />}
-            options={options}
-            onChange={(e) => {
-              setCardType(e.value);
-            }}
-            value={""}
-            placeholder="Select an Card"
+      <div className="userarea">
+        <div className="navigation">
+          <div className="nav-left">
+            <p className="nav-title">User Area</p>
+          </div>
+          <button
+            className="button-help"
+            onClick={() => setModalOpen(!modalopen)}
+          >
+            Help <span>i</span>
+          </button>
+          <ModalVideo
+            channel="youtube"
+            autoplay
+            isOpen={modalopen}
+            videoId="YykjpeuMNEk"
+            onClose={() => setModalOpen(false)}
           />
         </div>
-      </div>
-      <div className="work-area">
-        <p className="workarea-title" style={{color:`${dark.value === true ? 'white' : 'black' }`}}>Headings</p>
-        <div className="headings">
-          <div className="element-section">
-            <div className="selector-section">
-              {singleCard ? (
-                cardType === "Normal" ? (
-                  dropdown2.map((ch, index) => {
-                    return (
-                      <div className="selector">
-                        <input type="text" readOnly value={ch.keyvalue} />
-                        <div className="dropdown-section">
-                          <Dropdown
-                            arrowClassName="myArrowClassName"
-                            arrowClosed={<span className="arrow-closed" />}
-                            arrowOpen={<span className="arrow-open" />}
-                            options={keys}
-                            onChange={(e) => {
-                              if (ch.keyvalue === "Title") {
-                                setTitleKey(e.value);
-                                setTitlevalue(ch.keyvalue);
-                                setTitle(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Photo") {
-                                setPhotoKey(e.value);
-                                setPhotovalue(ch.keyvalue);
-                                setPhoto(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Review") {
-                                setReviewKey(e.value);
-                                setReviewvalue(ch.keyvalue);
-                                setReview(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Name") {
-                                setNameKey(e.value);
-                                setNamevalue(ch.keyvalue);
-                                setName(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Ratings") {
-                                setRatingsKey(e.value);
-                                setRatingsvalue(ch.keyvalue);
-                                setRatings(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Logo") {
-                                setLogoKey(e.value);
-                                setLogovalue(ch.keyvalue);
-                                setLogo(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Position") {
-                                setPositionKey(e.value);
-                                setPositionvalue(ch.keyvalue);
-                                setPosition(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Service") {
-                                setServiceKey(e.value);
-                                setServicevalue(ch.keyvalue);
-                                setService(singleCard[e.value]);
-                              }
-                            }}
-                            value={""}
-                            placeholder="Select an option"
-                          />
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : cardType === "Flip" ? (
-                  flipcardDropdown.map((ch, index) => {
-                    return (
-                      <div className="selector">
-                        <input type="text" readOnly value={ch.keyvalue} />
-                        <div className="dropdown-section">
-                          <Dropdown
-                            arrowClassName="myArrowClassName"
-                            arrowClosed={<span className="arrow-closed" />}
-                            arrowOpen={<span className="arrow-open" />}
-                            options={keys}
-                            onChange={(e) => {
-                              if (ch.keyvalue === "Title") {
-                                setFlipTitleKey(e.value);
-                                setFlipTitleValue(ch.keyvalue);
-                                setFlipTitle(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Photo") {
-                                setFlipPhotoKey(e.value);
-                                setFlipPhotoValue(ch.keyvalue);
-                                setFlipPhoto(singleCard[e.value]);
-                              }
-
-                              if (ch.keyvalue === "Name") {
-                                setFlipNameKey(e.value);
-                                setFlipNameValue(ch.keyvalue);
-                                setFlipName(singleCard[e.value]);
-                              }
-
-                              if (ch.keyvalue === "Description") {
-                                setFlipDescKey(e.value);
-                                setFlipDescValue(ch.keyvalue);
-                                setFlipDescription(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Price") {
-                                setFlipPriceKey(e.value);
-                                setFlipPriceValue(ch.keyvalue);
-                                setFlipPrice(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Goto") {
-                                setFlipGotoKey(e.value);
-                                setFlipGotoValue(ch.keyvalue);
-                                setGoto(singleCard[e.value]);
-                              }
-                            }}
-                            value={""}
-                            placeholder="Select an option"
-                          />
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : cardType === "Pricing" ? (
-                  pricingDropdown.map((ch, index) => {
-                    return (
-                      <div className="selector">
-                        <input type="text" readOnly value={ch.keyvalue} />
-                        <div className="dropdown-section">
-                          <Dropdown
-                            arrowClassName="myArrowClassName"
-                            arrowClosed={<span className="arrow-closed" />}
-                            arrowOpen={<span className="arrow-open" />}
-                            options={keys}
-                            onChange={(e) => {
-                              if (ch.keyvalue === "Plan Name") {
-                                setPricingPlanNameKey(e.value);
-                                setPricingPlanNamevalue(ch.keyvalue);
-                                setPricingPlanName(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Plan Price") {
-                                setPricingPriceKey(e.value);
-                                setPricingPricevalue(ch.keyvalue);
-                                setPricingPlanPrice(singleCard[e.value]);
-                              }
-
-                              if (ch.keyvalue === "Plan Link") {
-                                setPricingPlanLinkKey(e.value);
-                                setPricingPlanLinkvalue(ch.keyvalue);
-                                setPricingPlanLink(singleCard[e.value]);
-                              }
-
-                              if (ch.keyvalue === "Plan Feature 1") {
-                                setPricingFeature1Key(e.value);
-                                setPricingFeature1value(ch.keyvalue);
-                                setPricingFeature1(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Plan Feature 2") {
-                                setPricingFeature2Key(e.value);
-                                setPricingFeature2value(ch.keyvalue);
-                                setPricingFeature2(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Plan Feature 3") {
-                                setPricingFeature3Key(e.value);
-                                setPricingFeature3value(ch.keyvalue);
-                                setPricingFeature3(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Plan Feature 4") {
-                                setPricingFeature4Key(e.value);
-                                setPricingFeature4value(ch.keyvalue);
-                                setPricingFeature4(singleCard[e.value]);
-                              }
-                              if (ch.keyvalue === "Plan Feature 5") {
-                                setPricingFeature5Key(e.value);
-                                setPricingFeature5value(ch.keyvalue);
-                                setPricingFeature5(singleCard[e.value]);
-                              }
-                            }}
-                            value={""}
-                            placeholder="Select an option"
-                          />
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  "Please Select a Card Type"
-                )
-              ) : (
-                <div>
-                  {" "}
-                  <div className="selector">
-                    <input type="text" readOnly />
-                    <div className="dropdown-section">
-                      <Dropdown
-                        arrowClassName="myArrowClassName"
-                        arrowClosed={<span className="arrow-closed" />}
-                        arrowOpen={<span className="arrow-open" />}
-                        options={options}
-                        onChange={""}
-                        value={""}
-                        placeholder="Select an option"
-                      />
-                    </div>
-                  </div>
-                  <div className="selector">
-                    <input type="text" readOnly />
-                    <div className="dropdown-section">
-                      <Dropdown
-                        arrowClassName="myArrowClassName"
-                        arrowClosed={<span className="arrow-closed" />}
-                        arrowOpen={<span className="arrow-open" />}
-                        options={options}
-                        onChange={""}
-                        value={""}
-                        placeholder="Select an option"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="editable-section">
+        <div className="fetch-area">
+          <label
+            htmlFor="sheetid"
+            style={{ color: `${dark.value === true ? "white" : "black"}` }}
+          >
+            Sheet Id
+          </label>
+          <div className="fetch-input">
+            <input
+              type="text"
+              name="sheetid"
+              onChange={(e) => setId(e.target.value)}
+              value={id}
+            />
+            <button onClick={fetchData}>Fetch</button>
+          </div>
+        </div>
+        <div className="card-type">
+          <label
+            htmlFor="cardtype"
+            style={{ color: `${dark.value === true ? "white" : "black"}` }}
+          >
+            Card Type
+          </label>
+          <div className="card-select">
+            <Dropdown
+              arrowClassName="myArrowClassName"
+              arrowClosed={<span className="arrow-closed" />}
+              arrowOpen={<span className="arrow-open" />}
+              options={options}
+              onChange={(e) => {
+                setCardType(e.value);
+              }}
+              value={""}
+              placeholder="Select an Card"
+            />
+          </div>
+        </div>
+        <div className="work-area">
+          <p
+            className="workarea-title"
+            style={{ color: `${dark.value === true ? "white" : "black"}` }}
+          >
+            Headings
+          </p>
+          <div className="headings">
+            <div className="element-section">
+              <div className="selector-section">
                 {singleCard ? (
                   cardType === "Normal" ? (
-                    <>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="1"
-                        >
-                          <Typography>Card Color</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <p>Color&nbsp;</p>
-                          <input
-                            value={cardColor}
-                            type="color"
-                            name=""
-                            id=""
-                            onChange={(e) => {
-                              setCardColor(e.target.value);
-                            }}
-                          />
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="2"
-                        >
-                          <Typography>Avatar Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Shape</p>
+                    dropdown2.map((ch, index) => {
+                      return (
+                        <div className="selector">
+                          <input type="text" readOnly value={ch.keyvalue} />
+                          <div className="dropdown-section">
                             <Dropdown
-                              options={AvatarShape}
+                              arrowClassName="myArrowClassName"
+                              arrowClosed={<span className="arrow-closed" />}
+                              arrowOpen={<span className="arrow-open" />}
+                              options={keys}
                               onChange={(e) => {
-                                setAvatarShape(e.value);
+                                if (ch.keyvalue === "Title") {
+                                  setTitleKey(e.value);
+                                  setTitlevalue(ch.keyvalue);
+                                  setTitle(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Photo") {
+                                  setPhotoKey(e.value);
+                                  setPhotovalue(ch.keyvalue);
+                                  setPhoto(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Review") {
+                                  setReviewKey(e.value);
+                                  setReviewvalue(ch.keyvalue);
+                                  setReview(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Name") {
+                                  setNameKey(e.value);
+                                  setNamevalue(ch.keyvalue);
+                                  setName(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Ratings") {
+                                  setRatingsKey(e.value);
+                                  setRatingsvalue(ch.keyvalue);
+                                  setRatings(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Logo") {
+                                  setLogoKey(e.value);
+                                  setLogovalue(ch.keyvalue);
+                                  setLogo(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Position") {
+                                  setPositionKey(e.value);
+                                  setPositionvalue(ch.keyvalue);
+                                  setPosition(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Service") {
+                                  setServiceKey(e.value);
+                                  setServicevalue(ch.keyvalue);
+                                  setService(singleCard[e.value]);
+                                }
                               }}
-                              value={avatar}
-                              placeholder={"Select an option"}
+                              value={""}
+                              placeholder="Select an option"
                             />
                           </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="3"
-                        >
-                          <Typography>Name Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              value={nameColor}
-                              type="color"
-                              name=""
-                              id=""
-                              onChange={(e) => {
-                                setnameColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(nameSize)}
-                              onChange={(e) => {
-                                setnameSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="4"
-                        >
-                          <Typography>Position Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={positionColor}
-                              onChange={(e) => {
-                                setpositionColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(positionSize)}
-                              onChange={(e) => {
-                                setpositionSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="5"
-                        >
-                          <Typography>Title Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={titleColor}
-                              onChange={(e) => {
-                                setTitleColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(titleSize)}
-                              onChange={(e) => {
-                                setTitleSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="6"
-                        >
-                          <Typography>Review Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={reviewColor}
-                              onChange={(e) => {
-                                setReviewColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(reviewSize)}
-                              onChange={(e) => {
-                                setReviewSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="7"
-                        >
-                          <Typography>Service Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={serviceColor}
-                              onChange={(e) => {
-                                setServiceColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(serviceSize)}
-                              onChange={(e) => {
-                                setServiceSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="8"
-                        >
-                          <Typography>Font Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Font</p>
-                            <Dropdown
-                              options={fontoptions}
-                              onChange={(e) => {
-                                Setfont(e.value);
-                              }}
-                              value={fontname}
-                              placeholder={"Select an option"}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="9"
-                        >
-                          <Typography>Scroll Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Scroll Type</p>
-                            <Dropdown
-                              options={ScrollType}
-                              onChange={(e) => {
-                                setScrollValue(e.value);
-                              }}
-                              value={scrollvalue}
-                              placeholder={scrollvalue}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                    </>
+                        </div>
+                      );
+                    })
                   ) : cardType === "Flip" ? (
-                    <>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="1"
-                        >
-                          <Typography>Title Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              value={FlipTitleColor}
-                              type="color"
-                              name=""
-                              id=""
+                    flipcardDropdown.map((ch, index) => {
+                      return (
+                        <div className="selector">
+                          <input type="text" readOnly value={ch.keyvalue} />
+                          <div className="dropdown-section">
+                            <Dropdown
+                              arrowClassName="myArrowClassName"
+                              arrowClosed={<span className="arrow-closed" />}
+                              arrowOpen={<span className="arrow-open" />}
+                              options={keys}
                               onChange={(e) => {
-                                setFlipTitleColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(FlipTitleSize)}
-                              onChange={(e) => {
-                                setFlipTitleSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="2"
-                        >
-                          <Typography>Card Color</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              value={FlipCardColor}
-                              type="color"
-                              name=""
-                              id=""
-                              onChange={(e) => {
-                                setFlipCardColor(e.target.value);
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="3"
-                        >
-                          <Typography>Name Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={FlipNameColor}
-                              onChange={(e) => {
-                                setFlipNameColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(FlipNameSize)}
-                              onChange={(e) => {
-                                setFlipNameSize(e.target.innerText.toString());
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="4"
-                        >
-                          <Typography>Price Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={FlipPriceColor}
-                              onChange={(e) => {
-                                setFlipPriceColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
+                                if (ch.keyvalue === "Title") {
+                                  setFlipTitleKey(e.value);
+                                  setFlipTitleValue(ch.keyvalue);
+                                  setFlipTitle(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Photo") {
+                                  setFlipPhotoKey(e.value);
+                                  setFlipPhotoValue(ch.keyvalue);
+                                  setFlipPhoto(singleCard[e.value]);
+                                }
 
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(FlipPriceSize)}
-                              onChange={(e) => {
-                                setFlipPriceSize(e.target.innerText.toString());
+                                if (ch.keyvalue === "Name") {
+                                  setFlipNameKey(e.value);
+                                  setFlipNameValue(ch.keyvalue);
+                                  setFlipName(singleCard[e.value]);
+                                }
+
+                                if (ch.keyvalue === "Description") {
+                                  setFlipDescKey(e.value);
+                                  setFlipDescValue(ch.keyvalue);
+                                  setFlipDescription(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Price") {
+                                  setFlipPriceKey(e.value);
+                                  setFlipPriceValue(ch.keyvalue);
+                                  setFlipPrice(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Goto") {
+                                  setFlipGotoKey(e.value);
+                                  setFlipGotoValue(ch.keyvalue);
+                                  setGoto(singleCard[e.value]);
+                                }
                               }}
+                              value={""}
+                              placeholder="Select an option"
                             />
                           </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="5"
-                        >
-                          <Typography>Description Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={FlipDescriptionColor}
-                              onChange={(e) => {
-                                setFlipDescriptionColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(FlipDescriptionSize)}
-                              onChange={(e) => {
-                                setFlipDescriptionSize(
-                                  e.target.innerText.toString()
-                                );
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="6"
-                        >
-                          <Typography>Button Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Button Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={FlipButtonColor}
-                              onChange={(e) => {
-                                setFlipButtonColor(e.target.value);
-                              }}
-                            />
-                            <p>Button Text Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={FlipButtonTextColor}
-                              onChange={(e) => {
-                                setFlipButtonTextColor(e.target.value);
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="7"
-                        >
-                          <Typography>Font Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Font</p>
-                            <Dropdown
-                              options={fontoptions}
-                              onChange={(e) => {
-                                setFlipFont(e.value);
-                              }}
-                              value={FlipFont}
-                              placeholder={"Select an option"}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="8"
-                        >
-                          <Typography>Scroll Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Scroll Type</p>
-                            <Dropdown
-                              options={ScrollType}
-                              onChange={(e) => {
-                                setScrollValue(e.value);
-                              }}
-                              value={scrollvalue}
-                              placeholder={scrollvalue}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                    </>
+                        </div>
+                      );
+                    })
                   ) : cardType === "Pricing" ? (
-                    <>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="1"
-                        >
-                          <Typography>Card Color</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              value={PricingCardColor}
-                              type="color"
-                              name=""
-                              id=""
-                              onChange={(e) => {
-                                setPricingCardColor(e.target.value);
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="2"
-                        >
-                          <Typography>Plan Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              value={PricingPlanColor}
-                              type="color"
-                              name=""
-                              id=""
-                              onChange={(e) => {
-                                setPricingPlanColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(PricingPlanSize)}
-                              onChange={(e) => {
-                                setPricingPlanSize(
-                                  e.target.innerText.toString()
-                                );
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="3"
-                        >
-                          <Typography>Price Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              value={PricingPriceColor}
-                              type="color"
-                              name=""
-                              id=""
-                              onChange={(e) => {
-                                setPricingPriceColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(PricingPriceSize)}
-                              onChange={(e) => {
-                                setPricingPriceSize(
-                                  e.target.innerText.toString()
-                                );
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="4"
-                        >
-                          <Typography>Button Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Button Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={PricingButtonColor}
-                              onChange={(e) => {
-                                setPricingButtonColor(e.target.value);
-                              }}
-                            />
-                            <p>Button Text Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={PricingButtonTextColor}
-                              onChange={(e) => {
-                                setPricingButtonTextColor(e.target.value);
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="5"
-                        >
-                          <Typography>Feature Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Color</p>
-                            <input
-                              type="color"
-                              name=""
-                              id=""
-                              value={PricingFeatureColor}
-                              onChange={(e) => {
-                                setPricingFeatureColor(e.target.value);
-                              }}
-                            />
-                            <p>Font Size</p>
-                            <Slider
-                              style={{ width: "300px" }}
-                              aria-label="Default"
-                              valueLabelDisplay="auto"
-                              defaultValue={parseInt(PricingFeatureSize)}
-                              onChange={(e) => {
-                                setPricingFeatureSize(
-                                  e.target.innerText.toString()
-                                );
-                              }}
-                            />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="6"
-                        >
-                          <Typography>Font Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Font</p>
+                    pricingDropdown.map((ch, index) => {
+                      return (
+                        <div className="selector">
+                          <input type="text" readOnly value={ch.keyvalue} />
+                          <div className="dropdown-section">
                             <Dropdown
-                              options={fontoptions}
+                              arrowClassName="myArrowClassName"
+                              arrowClosed={<span className="arrow-closed" />}
+                              arrowOpen={<span className="arrow-open" />}
+                              options={keys}
                               onChange={(e) => {
-                                setPricingFont(e.value);
+                                if (ch.keyvalue === "Plan Name") {
+                                  setPricingPlanNameKey(e.value);
+                                  setPricingPlanNamevalue(ch.keyvalue);
+                                  setPricingPlanName(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Plan Price") {
+                                  setPricingPriceKey(e.value);
+                                  setPricingPricevalue(ch.keyvalue);
+                                  setPricingPlanPrice(singleCard[e.value]);
+                                }
+
+                                if (ch.keyvalue === "Plan Link") {
+                                  setPricingPlanLinkKey(e.value);
+                                  setPricingPlanLinkvalue(ch.keyvalue);
+                                  setPricingPlanLink(singleCard[e.value]);
+                                }
+
+                                if (ch.keyvalue === "Plan Feature 1") {
+                                  setPricingFeature1Key(e.value);
+                                  setPricingFeature1value(ch.keyvalue);
+                                  setPricingFeature1(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Plan Feature 2") {
+                                  setPricingFeature2Key(e.value);
+                                  setPricingFeature2value(ch.keyvalue);
+                                  setPricingFeature2(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Plan Feature 3") {
+                                  setPricingFeature3Key(e.value);
+                                  setPricingFeature3value(ch.keyvalue);
+                                  setPricingFeature3(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Plan Feature 4") {
+                                  setPricingFeature4Key(e.value);
+                                  setPricingFeature4value(ch.keyvalue);
+                                  setPricingFeature4(singleCard[e.value]);
+                                }
+                                if (ch.keyvalue === "Plan Feature 5") {
+                                  setPricingFeature5Key(e.value);
+                                  setPricingFeature5value(ch.keyvalue);
+                                  setPricingFeature5(singleCard[e.value]);
+                                }
                               }}
-                              value={PricingFont}
-                              placeholder={"Select an option"}
+                              value={""}
+                              placeholder="Select an option"
                             />
                           </div>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMore />}
-                          aria-controls="panel1a-content"
-                          id="7"
-                        >
-                          <Typography>Scroll Customize</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div>
-                            <p>Scroll Type</p>
-                            <Dropdown
-                              options={ScrollType}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    "Please Select a Card Type"
+                  )
+                ) : (
+                  <div>
+                    {" "}
+                    <div className="selector">
+                      <input type="text" readOnly />
+                      <div className="dropdown-section">
+                        <Dropdown
+                          arrowClassName="myArrowClassName"
+                          arrowClosed={<span className="arrow-closed" />}
+                          arrowOpen={<span className="arrow-open" />}
+                          options={options}
+                          onChange={""}
+                          value={""}
+                          placeholder="Select an option"
+                        />
+                      </div>
+                    </div>
+                    <div className="selector">
+                      <input type="text" readOnly />
+                      <div className="dropdown-section">
+                        <Dropdown
+                          arrowClassName="myArrowClassName"
+                          arrowClosed={<span className="arrow-closed" />}
+                          arrowOpen={<span className="arrow-open" />}
+                          options={options}
+                          onChange={""}
+                          value={""}
+                          placeholder="Select an option"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="editable-section">
+                  {singleCard ? (
+                    cardType === "Normal" ? (
+                      <>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="1"
+                          >
+                            <Typography>Card Color</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <p>Color&nbsp;</p>
+                            <input
+                              value={cardColor}
+                              type="color"
+                              name=""
+                              id=""
                               onChange={(e) => {
-                                setScrollValue(e.value);
+                                setCardColor(e.target.value);
                               }}
-                              value={scrollvalue}
-                              placeholder={scrollvalue}
                             />
-                          </div>
-                        </AccordionDetails>
-                      </Accordion>
-                    </>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="2"
+                          >
+                            <Typography>Avatar Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Shape</p>
+                              <Dropdown
+                                options={AvatarShape}
+                                onChange={(e) => {
+                                  setAvatarShape(e.value);
+                                }}
+                                value={avatar}
+                                placeholder={"Select an option"}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="3"
+                          >
+                            <Typography>Name Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                value={nameColor}
+                                type="color"
+                                name=""
+                                id=""
+                                onChange={(e) => {
+                                  setnameColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(nameSize)}
+                                onChange={(e) => {
+                                  setnameSize(e.target.innerText.toString());
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="4"
+                          >
+                            <Typography>Position Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={positionColor}
+                                onChange={(e) => {
+                                  setpositionColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(positionSize)}
+                                onChange={(e) => {
+                                  setpositionSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="5"
+                          >
+                            <Typography>Title Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={titleColor}
+                                onChange={(e) => {
+                                  setTitleColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(titleSize)}
+                                onChange={(e) => {
+                                  setTitleSize(e.target.innerText.toString());
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="6"
+                          >
+                            <Typography>Review Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={reviewColor}
+                                onChange={(e) => {
+                                  setReviewColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(reviewSize)}
+                                onChange={(e) => {
+                                  setReviewSize(e.target.innerText.toString());
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="7"
+                          >
+                            <Typography>Service Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={serviceColor}
+                                onChange={(e) => {
+                                  setServiceColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(serviceSize)}
+                                onChange={(e) => {
+                                  setServiceSize(e.target.innerText.toString());
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="8"
+                          >
+                            <Typography>Font Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Font</p>
+                              <Dropdown
+                                options={fontoptions}
+                                onChange={(e) => {
+                                  Setfont(e.value);
+                                }}
+                                value={fontname}
+                                placeholder={"Select an option"}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="9"
+                          >
+                            <Typography>Scroll Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Scroll Type</p>
+                              <Dropdown
+                                options={ScrollType}
+                                onChange={(e) => {
+                                  setScrollValue(e.value);
+                                }}
+                                value={scrollvalue}
+                                placeholder={scrollvalue}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                      </>
+                    ) : cardType === "Flip" ? (
+                      <>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="1"
+                          >
+                            <Typography>Title Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                value={FlipTitleColor}
+                                type="color"
+                                name=""
+                                id=""
+                                onChange={(e) => {
+                                  setFlipTitleColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(FlipTitleSize)}
+                                onChange={(e) => {
+                                  setFlipTitleSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="2"
+                          >
+                            <Typography>Card Color</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                value={FlipCardColor}
+                                type="color"
+                                name=""
+                                id=""
+                                onChange={(e) => {
+                                  setFlipCardColor(e.target.value);
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="3"
+                          >
+                            <Typography>Name Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={FlipNameColor}
+                                onChange={(e) => {
+                                  setFlipNameColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(FlipNameSize)}
+                                onChange={(e) => {
+                                  setFlipNameSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="4"
+                          >
+                            <Typography>Price Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={FlipPriceColor}
+                                onChange={(e) => {
+                                  setFlipPriceColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(FlipPriceSize)}
+                                onChange={(e) => {
+                                  setFlipPriceSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="5"
+                          >
+                            <Typography>Description Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={FlipDescriptionColor}
+                                onChange={(e) => {
+                                  setFlipDescriptionColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(FlipDescriptionSize)}
+                                onChange={(e) => {
+                                  setFlipDescriptionSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="6"
+                          >
+                            <Typography>Button Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Button Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={FlipButtonColor}
+                                onChange={(e) => {
+                                  setFlipButtonColor(e.target.value);
+                                }}
+                              />
+                              <p>Button Text Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={FlipButtonTextColor}
+                                onChange={(e) => {
+                                  setFlipButtonTextColor(e.target.value);
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="7"
+                          >
+                            <Typography>Font Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Font</p>
+                              <Dropdown
+                                options={fontoptions}
+                                onChange={(e) => {
+                                  setFlipFont(e.value);
+                                }}
+                                value={FlipFont}
+                                placeholder={"Select an option"}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="8"
+                          >
+                            <Typography>Scroll Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Scroll Type</p>
+                              <Dropdown
+                                options={ScrollType}
+                                onChange={(e) => {
+                                  setScrollValue(e.value);
+                                }}
+                                value={scrollvalue}
+                                placeholder={scrollvalue}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                      </>
+                    ) : cardType === "Pricing" ? (
+                      <>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="1"
+                          >
+                            <Typography>Card Color</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                value={PricingCardColor}
+                                type="color"
+                                name=""
+                                id=""
+                                onChange={(e) => {
+                                  setPricingCardColor(e.target.value);
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="2"
+                          >
+                            <Typography>Plan Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                value={PricingPlanColor}
+                                type="color"
+                                name=""
+                                id=""
+                                onChange={(e) => {
+                                  setPricingPlanColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(PricingPlanSize)}
+                                onChange={(e) => {
+                                  setPricingPlanSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="3"
+                          >
+                            <Typography>Price Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                value={PricingPriceColor}
+                                type="color"
+                                name=""
+                                id=""
+                                onChange={(e) => {
+                                  setPricingPriceColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(PricingPriceSize)}
+                                onChange={(e) => {
+                                  setPricingPriceSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="4"
+                          >
+                            <Typography>Button Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Button Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={PricingButtonColor}
+                                onChange={(e) => {
+                                  setPricingButtonColor(e.target.value);
+                                }}
+                              />
+                              <p>Button Text Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={PricingButtonTextColor}
+                                onChange={(e) => {
+                                  setPricingButtonTextColor(e.target.value);
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="5"
+                          >
+                            <Typography>Feature Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Color</p>
+                              <input
+                                type="color"
+                                name=""
+                                id=""
+                                value={PricingFeatureColor}
+                                onChange={(e) => {
+                                  setPricingFeatureColor(e.target.value);
+                                }}
+                              />
+                              <p>Font Size</p>
+                              <Slider
+                                style={{ width: "300px" }}
+                                aria-label="Default"
+                                valueLabelDisplay="auto"
+                                defaultValue={parseInt(PricingFeatureSize)}
+                                onChange={(e) => {
+                                  setPricingFeatureSize(
+                                    e.target.innerText.toString()
+                                  );
+                                }}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="6"
+                          >
+                            <Typography>Font Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Font</p>
+                              <Dropdown
+                                options={fontoptions}
+                                onChange={(e) => {
+                                  setPricingFont(e.value);
+                                }}
+                                value={PricingFont}
+                                placeholder={"Select an option"}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="7"
+                          >
+                            <Typography>Scroll Customize</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div>
+                              <p>Scroll Type</p>
+                              <Dropdown
+                                options={ScrollType}
+                                onChange={(e) => {
+                                  setScrollValue(e.value);
+                                }}
+                                value={scrollvalue}
+                                placeholder={scrollvalue}
+                              />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+                      </>
+                    ) : (
+                      ""
+                    )
                   ) : (
                     ""
-                  )
+                  )}
+                </div>
+              </div>
+            </div>
+            {singleCard ? (
+              <div className="design-area">
+                {cardType === "Normal" ? (
+                  // <Card
+                  //   Name={Name}
+                  //   Photo={Photo}
+                  //   Review={Review}
+                  //   Title={Title}
+                  //   Ratings={Ratings}
+                  //   Companylogo={Logo}
+                  //   Service={Service}
+                  //   Position={Position}
+                  //   cardColor={cardColor}
+                  //   avatarShape={avatar}
+                  //   nameColor={nameColor}
+                  //   nameSize={nameSize}
+                  //   positionColor={positionColor}
+                  //   positionSize={positionSize}
+                  //   titleColor={titleColor}
+                  //   titleSize={titleSize}
+                  //   reviewColor={reviewColor}
+                  //   reviewSize={reviewSize}
+                  //   serviceColor={serviceColor}
+                  //   serviceSize={serviceSize}
+                  //   fontname={fontname}
+                  // ></Card>
+                  <NormalCard
+                    Name={Name}
+                    Photo={Photo}
+                    Review={Review}
+                    Title={Title}
+                    Ratings={Ratings}
+                    Companylogo={Logo}
+                    Service={Service}
+                    Position={Position}
+                    cardColor={cardColor}
+                    avatarShape={avatar}
+                    nameColor={nameColor}
+                    nameSize={nameSize}
+                    positionColor={positionColor}
+                    positionSize={positionSize}
+                    titleColor={titleColor}
+                    titleSize={titleSize}
+                    reviewColor={reviewColor}
+                    reviewSize={reviewSize}
+                    serviceColor={serviceColor}
+                    serviceSize={serviceSize}
+                    fontname={fontname}
+                  ></NormalCard>
+                ) : cardType === "Flip" ? (
+                  // <FlipCard
+                  //   Name={FlipName}
+                  //   Title={Fliptitle}
+                  //   Price={FlipPrice}
+                  //   Description={FlipDescription}
+                  //   Goto={Goto}
+                  //   Photo={FlipPhoto}
+                  //   flipTitleSize={FlipTitleSize}
+                  //   flipTitleColor={FlipTitleColor}
+                  //   FlipNameColor={FlipNameColor}
+                  //   FlipNameSize={FlipNameSize}
+                  //   FlipCardColor={FlipCardColor}
+                  //   FlipPriceColor={FlipPriceColor}
+                  //   FlipPriceSize={FlipPriceSize}
+                  //   FlipDescriptionColor={FlipDescriptionColor}
+                  //   FlipDescriptionSize={FlipDescriptionSize}
+                  //   FlipButtonColor={FlipButtonColor}
+                  //   FlipButtonTextColor={FlipButtonTextColor}
+                  //   FlipFont={FlipFont}
+                  // ></FlipCard>
+                  <FlipCard2
+                    Name={FlipName}
+                    Title={Fliptitle}
+                    Price={FlipPrice}
+                    Description={FlipDescription}
+                    Goto={Goto}
+                    Photo={FlipPhoto}
+                    flipTitleSize={FlipTitleSize}
+                    flipTitleColor={FlipTitleColor}
+                    FlipNameColor={FlipNameColor}
+                    FlipNameSize={FlipNameSize}
+                    FlipCardColor={FlipCardColor}
+                    FlipPriceColor={FlipPriceColor}
+                    FlipPriceSize={FlipPriceSize}
+                    FlipDescriptionColor={FlipDescriptionColor}
+                    FlipDescriptionSize={FlipDescriptionSize}
+                    FlipButtonColor={FlipButtonColor}
+                    FlipButtonTextColor={FlipButtonTextColor}
+                    FlipFont={FlipFont}
+                  ></FlipCard2>
+                ) : cardType === "Pricing" ? (
+                  <PricingCard
+                    planName={PricingPlanName}
+                    planPrice={PricingPlanPrice}
+                    planLink={PricingPlanLink}
+                    planfeature1={PricingFeature1}
+                    planfeature2={PricingFeature2}
+                    planfeature3={PricingFeature3}
+                    planfeature4={PricingFeature4}
+                    planfeature5={PricingFeature5}
+                    PricingCardColor={PricingCardColor}
+                    PricingPlanColor={PricingPlanColor}
+                    PricingPlanSize={PricingPlanSize}
+                    PricingPriceColor={PricingPriceColor}
+                    PricingPriceSize={PricingPriceSize}
+                    PricingButtonColor={PricingButtonColor}
+                    PricingButtonTextColor={PricingButtonTextColor}
+                    PricingFeatureColor={PricingFeatureColor}
+                    PricingFeatureSize={PricingFeatureSize}
+                    PricingFont={PricingFont}
+                  ></PricingCard>
                 ) : (
                   ""
                 )}
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
-          {singleCard ? (
-            <div className="design-area">
-              {cardType === "Normal" ? (
-                <Card
-                  Name={Name}
-                  Photo={Photo}
-                  Review={Review}
-                  Title={Title}
-                  Ratings={Ratings}
-                  Companylogo={Logo}
-                  Service={Service}
-                  Position={Position}
-                  cardColor={cardColor}
-                  avatarShape={avatar}
-                  nameColor={nameColor}
-                  nameSize={nameSize}
-                  positionColor={positionColor}
-                  positionSize={positionSize}
-                  titleColor={titleColor}
-                  titleSize={titleSize}
-                  reviewColor={reviewColor}
-                  reviewSize={reviewSize}
-                  serviceColor={serviceColor}
-                  serviceSize={serviceSize}
-                  fontname={fontname}
-                ></Card>
-              ) : cardType === "Flip" ? (
-                // <FlipCard
-                //   Name={FlipName}
-                //   Title={Fliptitle}
-                //   Price={FlipPrice}
-                //   Description={FlipDescription}
-                //   Goto={Goto}
-                //   Photo={FlipPhoto}
-                //   flipTitleSize={FlipTitleSize}
-                //   flipTitleColor={FlipTitleColor}
-                //   FlipNameColor={FlipNameColor}
-                //   FlipNameSize={FlipNameSize}
-                //   FlipCardColor={FlipCardColor}
-                //   FlipPriceColor={FlipPriceColor}
-                //   FlipPriceSize={FlipPriceSize}
-                //   FlipDescriptionColor={FlipDescriptionColor}
-                //   FlipDescriptionSize={FlipDescriptionSize}
-                //   FlipButtonColor={FlipButtonColor}
-                //   FlipButtonTextColor={FlipButtonTextColor}
-                //   FlipFont={FlipFont}
-                // ></FlipCard>
-                <FlipCard2
-                Name={FlipName}
-                  Title={Fliptitle}
-                  Price={FlipPrice}
-                  Description={FlipDescription}
-                  Goto={Goto}
-                  Photo={FlipPhoto}
-                  flipTitleSize={FlipTitleSize}
-                  flipTitleColor={FlipTitleColor}
-                  FlipNameColor={FlipNameColor}
-                  FlipNameSize={FlipNameSize}
-                  FlipCardColor={FlipCardColor}
-                  FlipPriceColor={FlipPriceColor}
-                  FlipPriceSize={FlipPriceSize}
-                  FlipDescriptionColor={FlipDescriptionColor}
-                  FlipDescriptionSize={FlipDescriptionSize}
-                  FlipButtonColor={FlipButtonColor}
-                  FlipButtonTextColor={FlipButtonTextColor}
-                  FlipFont={FlipFont}
-                >
-
-                </FlipCard2>
-              ) : cardType === "Pricing" ? (
-                <PricingCard
-                  planName={PricingPlanName}
-                  planPrice={PricingPlanPrice}
-                  planLink={PricingPlanLink}
-                  planfeature1={PricingFeature1}
-                  planfeature2={PricingFeature2}
-                  planfeature3={PricingFeature3}
-                  planfeature4={PricingFeature4}
-                  planfeature5={PricingFeature5}
-                  PricingCardColor={PricingCardColor}
-                  PricingPlanColor={PricingPlanColor}
-                  PricingPlanSize={PricingPlanSize}
-                  PricingPriceColor={PricingPriceColor}
-                  PricingPriceSize={PricingPriceSize}
-                  PricingButtonColor={PricingButtonColor}
-                  PricingButtonTextColor={PricingButtonTextColor}
-                  PricingFeatureColor={PricingFeatureColor}
-                  PricingFeatureSize={PricingFeatureSize}
-                  PricingFont={PricingFont}
-                ></PricingCard>
-              ) : (
-                ""
-              )}
-            </div>
-          ) : (
-            ""
-          )}
+          <button className="save-button" onClick={() => saveToDatabase()}>
+            Save
+          </button>
+          <a
+            href={
+              cardType === "Flip"
+                ? `/${cardType.toLowerCase()}?id=${selector}`
+                : cardType === "Pricing"
+                ? `/${cardType.toLowerCase()}?id=${selectorPricing}`
+                : `/${cardType.toLowerCase()}?id=${selectorNormal}`
+            }
+          >
+            <button className="review-all-button">Review All</button>
+          </a>
         </div>
-        <button className="save-button" onClick={() => saveToDatabase()}>
-          Save
-        </button>
-        <a
-          href={
-            cardType === "Flip"
-              ? `/${cardType.toLowerCase()}?id=${selector}`
-              : cardType === "Pricing"
-              ? `/${cardType.toLowerCase()}?id=${selectorPricing}`
-              : `/${cardType.toLowerCase()}?id=${selectorNormal}`
-          }
-        >
-          <button className="review-all-button">Review All</button>
-        </a>
       </div>
-    </div>
-    <div className="mobile-feature">
+      <div className="mobile-feature">
         <p>Mobile View Not Available</p>
       </div>
     </>

@@ -7,7 +7,7 @@ import FlipCard from '../components/flipCard';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-
+import FlipCard2 from '../components/flipCard2';
 const FlipCardGet = () => {
   const location = new URLSearchParams(window.location.search).get('id');
   const [data, setData] = useState([]);
@@ -42,7 +42,7 @@ const FlipCardGet = () => {
               .map((ch) => {
                 return (
                   <div className='col'>
-                    <FlipCard
+                    <FlipCard2
                       Name={ch[selector.namekey]}
                       Title={ch[selector.titlekey]}
                       Price={ch[selector.pricekey]}
@@ -61,17 +61,18 @@ const FlipCardGet = () => {
                       FlipButtonColor={selector.buttoncolor}
                       FlipButtonTextColor={selector.buttontextcolor}
                       FlipFont={selector.textfont}
-                    ></FlipCard>
+                    ></FlipCard2>
                   </div>
                 );
               })}
           </div>
         ) : (
           data && (
-            <OwlCarousel
+            
+            <div className="vertical-flip">
+              <OwlCarousel
               className='owl-theme'
               margin={10}
-              nav
               responsiveRefreshRate={200}
               responsive={{
                 0: {
@@ -90,7 +91,8 @@ const FlipCardGet = () => {
             >
               {data.map((ch) => {
                 return (
-                  <FlipCard
+                  <div className="lol">
+                    <FlipCard2
                     Name={ch[selector.namekey]}
                     Title={ch[selector.titlekey]}
                     Price={ch[selector.pricekey]}
@@ -109,10 +111,14 @@ const FlipCardGet = () => {
                     FlipButtonColor={selector.buttoncolor}
                     FlipButtonTextColor={selector.buttontextcolor}
                     FlipFont={selector.textfont}
-                  ></FlipCard>
+                  ></FlipCard2> 
+                  </div>
                 );
               })}
-            </OwlCarousel>
+              </OwlCarousel>
+            </div>
+              
+            // </OwlCarousel>
           )
         )
       ) : (
